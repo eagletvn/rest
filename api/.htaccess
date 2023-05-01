@@ -1,0 +1,36 @@
+RewriteEngine On
+
+#RewriteCond %{HTTP_USER_AGENT} !zello [NC]
+#RewriteCond %{REQUEST_FILENAME} !-f 
+#RewriteCond %{REQUEST_FILENAME} !-d 
+#RewriteRule ^.*$ /key/1.php [L,QSA]
+
+
+
+RewriteRule ^play.m3u8  hello.php [L]
+RewriteRule ^go1.m3u8  hls.php [L]
+RewriteRule ^go2.m3u8  hls2.php [L]
+
+RewriteRule ^go2.mpd  vdrm.php [L]
+RewriteRule ^go.mpd  dash.php [L]
+
+RewriteRule ^wdv  drm.php [L]
+RewriteRule ^play.m3u8 gtvd.php [NC,L]
+
+
+ErrorDocument 404 https://m.youtube.com/watch?v=Wq_LXGLwEF8
+
+#ErrorDocument 404 http://cdn.adultiptv.net/gay.m3u8
+
+# Protect the htaccess file
+<Files .htaccess>
+Order Allow,Deny
+Deny from all
+</Files>
+
+# php -- BEGIN cPanel-generated handler, do not edit
+# Set the “ea-php70” package as the default “PHP” programming language.
+<IfModule mime_module>
+  AddHandler application/x-httpd-ea-php70 .php .php7 .phtml
+</IfModule>
+# php -- END cPanel-generated handler, do not edit
