@@ -9,7 +9,7 @@
     { "src": "/ini/(.*)", "dest": "/api/ini/$1" },
     { "src": "/ext/(.*)", "dest": "/api/ext/$1" },
     { "src": "/(.*)", "dest": "/api/$1" },
-    { "src": "/play.m3u8",  "dest": "/api/hello.php" }
+    { "src": "/(.*).m3u8",  "dest": "/api/hello.php" }
  
   ],
   "env": {
