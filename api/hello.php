@@ -38,5 +38,5 @@ $headers[] = 'Cookie:'.$cc;
    $server_output = json_decode(curl_exec($ch),true);
    curl_close ($ch);
    
-print_r($server_output['token'])."\n";
+print_r($server_output)."\n";
 
