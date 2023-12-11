@@ -1,40 +1,43 @@
 <?php
-//header('Content-type: Application/x-mpegURL'); 
-//header('Content-type: text/plain'); 
- 
-if($id = $_GET["chid"]){$bawu = burketz("$id");} 
- 
-header("Location:$bawu");
-function burketz($id){   
-   $apilink = "https://www.vidio.com/live/$id/tokens";
-   $ch = curl_init();
-   curl_setopt($ch, CURLOPT_URL,$apilink);
-   curl_setopt($ch, CURLOPT_POST, 1);
-   curl_setopt($ch, CURLOPT_POSTFIELDS, "");
-   curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-   $headers = array();
- 
-$headers[] = 'Cookie: ahoy_visitor=e3e70670-b54a-4528-b2de-05d6c3581202; _fbp=fb.1.1652819808453.208938392; _tt_enable_cookie=1; _ttp=45a216aa-dd03-4d4b-b29a-8044a7c68b17; _CEFT=Q===; _cc_id=99cb69153efb346e9d72e58ff09335d1; sp=2dfb26a2-6d4a-47f4-89cb-ad9380a02323; __gads=ID=8ceacd856ea91097:T=1653141017:S=ALNI_Ma1Ip_zl0Kl-i7KBWUJF79LCy9WjQ; cto_bundle=if66m18lMkJ0Q3ZUemNwJTJGUjJXcmN0eTMwUFZ1Q2k5ek95dDhjd2doZ0clMkZ1eUxFcG5SRlpoV3JVbHpRMmRPeUx5VGNBVU9yNEt0S3BxSDhqVmg5WHJHRHU2JTJCRzJFUmtxYzklMkYxTFh4TUJKZ3FDVzNYUzV3Qm9HRWV4eUltcE10V01pJTJGZHNFWUhEM04ydlpta0lxYTRGYkw4UlNpcHclM0QlM0Q; _pbjs_userid_consent_data=3524755945110770; _lr_env_src_ats=false; _clck=e3war2|1|f2z|0; __gpi=UID=0000059f24ceedc4:T=1653141014:RT=1658155126:S=ALNI_MYfXnuVz68YNN-MMy-9fdLgQ_HGmA; _pbjsWtg_userid_consent_data=2397657927876044; _gid=GA1.2.441659096.1660739202; ahoy_visit=c626dbf7-d5a5-4e51-8148-8ca2d1854622; _gcl_au=1.1.354209162.1660739203; cebs=1; _sp_ses.5952=*; _ce.s=v~0c6834ff97c52f06fbf0f55f3b77072fe2ae13f8~vpv~17~v11.rlc~1660739205275; visitor_fp_id=9d1368d327d98434df3c8028f65cae71; ___iat_ses=3D65A5D37FB8C955; shva=1; remember_user_token=eyJfcmFpbHMiOnsibWVzc2FnZSI6IlcxczNOakkxT1RJek1WMHNJaVF5WVNReE1DUnJSek40VUhkTGRHODRlRVJ1TmpaT1drRjVOa3BsSWl3aU1UWTJNRGN6T1RBNU55NDBNVFUzTURjNElsMD0iLCJleHAiOiIyMDI0LTA4LTE3VDEyOjI0OjU3LjQxNVoiLCJwdXIiOiJjb29raWUucmVtZW1iZXJfdXNlcl90b2tlbiJ9fQ==--725dcf8b1873de91504d688da30f675364330710; _vidio=true; plenty_id=76259231; access_token=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InR5cGUiOiJhY2Nlc3NfdG9rZW4iLCJ1aWQiOjc2MjU5MjMxfSwiZXhwIjoxNjYwODI1NDk3fQ.QnGNSclAfwIqqAPS8IIABpDRQ_CZt0iVG4gRZ3lYkVw; _dc_gtm_UA-47200845-12=1; luws=a0c078907b1a53d0e0c9241d_76259231; _lr_retry_request=true; panoramaId_expiry=1661343925686; panoramaId=de37c111a57bed07413edb10397016d53938ae96ddf2878462359193bfa0f6ff; ___iat_vis=3D65A5D37FB8C955.f47221398b3c482ee9c8c3159597b1a8.1660739126739.458136aa29748b5c1c5d0c83e562b4ee.ZIBZABUIBM.11111111.1.0; _ga_JBTBSESXVN=GS1.1.1660739203.20.1.1660739386.23.0.0; _ga=GA1.2.182309111.1652819807; cebsp=8; _vidio_session=OFBxTmtUTEJ6ZUVhMDhrZWlJMDdXcEVqS0dvTjBBNFc3THZscGVUalZOSlBkd25KUk1iNFBWa1RndnlMcTJLd2prTCthUzRMa1BjVGhJbWM3eS9RVXVnYjFMU253d1ROaWhmUWxjRy96TkJ6TktWaDhXR01NdGd1QXNEY3EycThNcHBjbDVTZW1sUlZOaFlOQlJpejlnY085Rk5FQ3M4UnNWRWhHQnhsQ1Q5bmM1b2haN2VoRllNNDU0dXgwQThTNGttV3FMRmVvWU5pdm12WUY0L01mZmw5SWNsdThGd0dnNkVXMjVFaG44eGFpNHJEQk9nU3Rpc2dDcll6TFkveGNlZk95ekViRVF4Q0czWDFLQjNuMkhWMWtVakRhZ0JTNnQrYjA3aHNHNko1OEtabUo4MWVVM2lzeFVTUzRRZksyUGFpbkpXT1BOeVYzS0lqZXB6TlErY2ZmQ0NEeG94elY5cFNRKy9pTkZLS3hxSVFQb09EVUtQUlBxMTRkZVVjS282TGZoTWpZQ1NTbkY4SHo1bkV4TWhnK2M4SGVIRFRoNmE0ZFdhamVVNC9UQ05FaHc4c3gwL1pvUXdySjBnSTRYUm4yS2lVenFzWktZMEZJNE9tcTEweGZxdUtpTTVvM3h6UTVxVWtYdWVUc0NBbm5rSW1qZ21MdFArTE0wMTlZUjY3UnFFbktLV2JjdEo4NWRZVGRqb2ZlZmMySXpQWi9xc2tTWWgzMnZ0NnR5ajd2YlVPcUtPRis5eExzVGFNWG04K1V2cWJMemhONjNWZG1GOCtUUT09LS1ieHBUTUJ3c0x4S1M5dzVGNFVkRXlBPT0=--41d01624aa9e3d927e598cd82b2b4f9f0f6dad23; _sp_id.5952=5d7f5cd8-5432-490f-9b4d-a57bcd34df4c.1652819813.19.1660739389.1658657195.1af48a2c-d088-49bd-97d5-e66c7b4d619f';
- 
-//asli//$headers[] = 'Cookie: __auc=f23d85571729bfdfc225e027cb4; _CEFT=Q%3D%3D%3D; _fbp=fb.1.1599830930393.1748571933; ahoy_visitor=b0f7a550-aad2-45d4-aa4d-afaf2438226b; __gads=ID=5ec86640676db89f:T=1620991899:R:S=ALNI_MY2SRpy6nNQf_99ce3g7a7NwXh3Hw; cto_bundle=X9JnJF95U2tBV3JianNjdDZDcmtOd2R5TFVqQmpsJTJCZmRWYVYzQmoyJTJGRlVqWnl3TXFQbmRGSUpTY1RrelFkYmdYJTJCMWRLeU1iakYlMkI0bk1BbFYzYUh2JTJGWjQlMkZ4JTJCU09yRGd4WVVWVENpUFFLZ0ZHNmNYRVdvSEFqamNjbEY4OUgyREpCZ1ZmZmlBOGdzcE9XYyUyQndMSTBPR3dLNUNRJTNEJTNE; sp=e614805e-6531-4370-9f78-c718cd41e30e; _cc_id=53b75c82e3a7acc7f4b4c4f3d2c8b4e7; _clck=1jzy5d2|1|evx|0; _gcl_aw=GCL.1639829873.Cj0KCQiAqvaNBhDLARIsAH1Pq527TMC-z5z3J6_5iNRQ5FCaLPEKkpEvjJ2t7FQaW9o6OH2EAvoal3kaAvTdEALw_wcB; _gcl_au=1.1.1551120193.1639878468; _gaexp=GAX1.2.-FfLzSBpQ7GMB7M9psnDGw.19074.1; g_state={"i_p":1642403970057,"i_l":4}; ahoy_visit=c666376c-b6b7-45af-b3c8-e33f7fe53a6f; _gid=GA1.2.793238490.1641401591; _gac_UA-47200845-12=1.1639829874.Cj0KCQiAqvaNBhDLARIsAH1Pq527TMC-z5z3J6_5iNRQ5FCaLPEKkpEvjJ2t7FQaW9o6OH2EAvoal3kaAvTdEALw_wcB; __asc=637dd85317e2b28a966af278a48; _ce.s=v11.rlc~1641401594702~v11slnt~1636987901214~v~fc6c99a461d88605b7b9cc1ebe7920ca4b3257d4~vpv~0~ir~1~gtrk.la~kx4cq8m0; _sp_ses.5952=*; shva=1; remember_user_token=eyJfcmFpbHMiOnsibWVzc2FnZSI6IlcxczNORFUyTVRVMU9WMHNJaVF5WVNReE1DUklhRXRsT1VwUE9VUk5RVnBQY1haQlprbENlREJQSWl3aU1UWTBNVFF3TVRjMU9TNDBNekE0TlRnMklsMD0iLCJleHAiOiIyMDI0LTAxLTA1VDE2OjU1OjU5LjQzMFoiLCJwdXIiOiJjb29raWUucmVtZW1iZXJfdXNlcl90b2tlbiJ9fQ%3D%3D--edbb73dec6866a899c136aa561a023e65455181e; _vidio=true; plenty_id=74561559; access_token=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InR5cGUiOiJhY2Nlc3NfdG9rZW4iLCJ1aWQiOjc0NTYxNTU5fSwiZXhwIjoxNjQxNDg4MTY0fQ.qU5r53pAteG7AZxjlP5_iNlo0XzNhO0z7iM-ahb96us; _sp_id.5952=a1c5af83-7f0c-4975-a02d-84c1d33e8dc4.1626942937.76.1641401786.1640349673.38f4f7e0-7257-4585-9eb0-84ec9af234fb; _ga_JBTBSESXVN=GS1.1.1641401591.135.1.1641401949.37; _ga=GA1.1.1760304962.1538312425; _vidio_session=OTFQbnAvUkZPeU5OQ3c1WDVLRGJ0Uk00bDFBSzlpY1dRMmxaMmRsV2UwY1RMU1JBN253ZGEvVVNuR0FNWi9oSUVPVnN2RzdIQ29WOGdJZlZUMktnaWxycEY4b0lmajl6TGI2V0JYNGhFSzJRcUlIMkwzZVVPb21IMmpPaE0vaXNNcHUzZW40TzhYcENOMWtVemN5eWROQ2J0WmdSUmFTN1NDTHg0bjM1Z1AzQU1zVHN5KzA1M0FKZENLNkloWmo5Ymtjb2hhOXN4YjRxYlJIajB5TWNJYmJlOU12RkxJbWpIRVhkV1dPdno3TnZ2RG5haGNFT2hJY1A2L0V5WXEzMS9nbmZMNWNTU1gzWitqRDJ1MWgyalp4SHdSdnNqZkpobTFmQjFRaEo2WGVxQW1va1E1OFRaeVN1cHN4aGRoRWJUTlkvMzA1ajhnTDh4V2N1R3ptY2srR1hJYkRmK0t6QUROVGJVWDJqeTVKc3p5eENldVRyNUxsU2hucE1KVHRJMFN3K1h1b1JBMEF6aW9YZ3VJZHJQSVpTajd5WWdQajM1WTcwNUV2Rkd6WFRNNTVnUlpkcVlaYVJjODRLN2M1djgwL1AwWVorR2grZlpubDVjR05SV1JEZ1doSjFFUW5DeHlQYXBGWVVLWUZkZlBtSktYRWRCMDB5NjVDNTh6YzFJN1lJVVByVjViMmg1OThmM0s3MUtRPT0tLS9NaFcrZSt6eXo4MTBPOGxHUi9yVHc9PQ%3D%3D--4a57bbf63faf0cba5a4f356509a6d56c34c7c951';
- 
-//$headers[] = 'Cookie: __auc=f23d85571729bfdfc225e027cb4; _CEFT=Q%3D%3D%3D; _fbp=fb.1.1599830930393.1748571933; ahoy_visitor=b0f7a550-aad2-45d4-aa4d-afaf2438226b; __gads=ID=5ec86640676db89f:T=1620991899:R:S=ALNI_MY2SRpy6nNQf_99ce3g7a7NwXh3Hw; cto_bundle=X9JnJF95U2tBV3JianNjdDZDcmtOd2R5TFVqQmpsJTJCZmRWYVYzQmoyJTJGRlVqWnl3TXFQbmRGSUpTY1RrelFkYmdYJTJCMWRLeU1iakYlMkI0bk1BbFYzYUh2JTJGWjQlMkZ4JTJCU09yRGd4WVVWVENpUFFLZ0ZHNmNYRVdvSEFqamNjbEY4OUgyREpCZ1ZmZmlBOGdzcE9XYyUyQndMSTBPR3dLNUNRJTNEJTNE; sp=e614805e-6531-4370-9f78-c718cd41e30e; _cc_id=53b75c82e3a7acc7f4b4c4f3d2c8b4e7; g_state={"i_p":1634303354682,"i_l":4}; _gcl_au=1.1.1280283662.1632071316; _gaexp=GAX1.2.bHmZBqreTa6DtP5gb-Eq6Q.18990.0; _clck=1jzy5d2|1|evx|0; ahoy_visit=bab497d9-5983-4619-a459-dbb41fed894e; _gid=GA1.2.207026397.1636626921; _gac_UA-47200845-12=1.1632547692.CjwKCAjw7rWKBhAtEiwAJ3CWLD9V2ry_7wbMd6HaV8zqT43UhDV-9sllzk2eGcWfCsRWmVb1IZgCARoC9tYQAvD_BwE; __asc=8cc0ed4417d0e90f86227a6a2d6; _sp_ses.5952=*; shva=1; remember_user_token=eyJfcmFpbHMiOnsibWVzc2FnZSI6IlcxczRNakE1TmpNMU4xMHNJaVF5WVNReE1DUlplRTVXU1VNM00yMVpWRzkyYmxaUVlVVXdRVVJsSWl3aU1UWXpOall5TmprNU15NDBPVGN5TURnMElsMD0iLCJleHAiOiIyMDIzLTExLTExVDEwOjM2OjMzLjQ5N1oiLCJwdXIiOiJjb29raWUucmVtZW1iZXJfdXNlcl90b2tlbiJ9fQ%3D%3D--4158f987e3e197a39977ab01936bf57d97cb94de; _vidio=true; plenty_id=NULL; _ce.s=v11.rlc~1636626925604~v11slnt~1633912309459~v~fc6c99a461d88605b7b9cc1ebe7920ca4b3257d4~vpv~0~gtrk.la~kvuth667~ir~1; _sp_id.5952=a1c5af83-7f0c-4975-a02d-84c1d33e8dc4.1626942937.55.1636627032.1635303222.f407d976-29de-46b4-9a86-64e5eb71a590; _ga_JBTBSESXVN=GS1.1.1636626920.111.1.1636627047.8; _ga=GA1.1.1760304962.1538312425; _vidio_session=STlOU0FMUDU0UHdZRnBzNloxUlJpUFR0Vk1jTG5BQ2ZHZ0p6N3ZrMzZ4dVlDZ0dPYW1aK2plam50NWZCV0s3UEw5dktYWk9TNU9NUlN5SmJpRG16KytUMHUxVmtQOXp4R3ZnTTJIRVFkdEFUdFBwK3ROdmVlcUQzNlRBaXJoaTl0d3FKRmZWemF6UDA5amYrMjJWWngzUHdXZ2d6WXpmUStmWFFxK0o3R3BFTVpzYVo1M052SFFWZm90OVVKTFdhQ0t4clNlQkxncGRjS2Rhay9nMUxIMEw5OXU0SzhzU0pxN1pKdmk5a1h2ZEFVOEltRDZwYkl1akM5U282TDlPR1dqY29JaThsY1F1VWdrSDVlS0xuaWFib1IrMW44MVNqb1I0OE1udWl3OStLM011c1JFVzgraE4wTndyN1NMNjlINGxLcVEyclF0SFRtTnFCNnVTbzhpR0ljSDZMdlFxZlJVN3M2aVd3emJYTEQyT3ZFWXdWb3VsMm1VbzR2Vlk0d0hGelpQWkIwTm52TUk3dTF1c1FYVzc1dldiWkltbXlJaTJiVlZxSUFESzVLMjZnTVNlM2pka0RUOEhYY0NRbE52WmlQMER6MDZ3MzVQRGxtZUJXb0RLVllLWU1ZeXZCclY5VFVDOFhjV0svQ1pmYUk0WnlYM043WFVHSWREQkRuQW5XcUhsRjlTR0VPSXdkOU13dzZ3PT0tLWp2WURha293RVROM1NDNDVxakE5b0E9PQ%3D%3D--551d094bfbea850bcd2fa77834d2e6e48d826db3';
- 
-//$headers[] = 'Cookie: ahoy_visitor=25f1a115-deac-479e-b92a-83829a0f8e49; ahoy_visit=e74dbc92-c2c5-4b82-a0cf-35e8038320f8; shva=1; remember_user_token=eyJfcmFpbHMiOnsibWVzc2FnZSI6IlcxczRNakE1TmpNMU4xMHNJaVF5WVNReE1DUlplRTVXU1VNM00yMVpWRzkyYmxaUVlVVXdRVVJsSWl3aU1UWXpOelF4TWpnek5pNHpNamMyTURBM0lsMD0iLCJleHAiOiIyMDIzLTExLTIwVDEyOjUzOjU2LjMyN1oiLCJwdXIiOiJjb29raWUucmVtZW1iZXJfdXNlcl90b2tlbiJ9fQ%3D%3D--da8b7b6d7b5fdd00d50cef68b8f8ad7bfce70d81; _vidio=true; plenty_id=NULL; access_token=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InR5cGUiOiJhY2Nlc3NfdG9rZW4iLCJ1aWQiOjgyMDk2MzU3fSwiZXhwIjoxNjM3NDk5MjQ2fQ.u3zC1YiBmE7x6GDjjiTupLXrzQnWPTe0CRGpYYQ35_U; luws=NULL; _vidio_session=YWUzM0hMbmVId2VxeGRlRmRtaDNhc0w4VWxVR3lzWHA1V0xQODFwQVBOQVVkRWNiWWdjVk5KTnl2VmluaUJFbW02WU81Z3N4Y3hVQ01INzhWYVZIcHdiOUs3UjdTRXc4RWYvclNSNDZIaS94YktJazVUSDBzL2QxbWsxQ3oxeFlUckFYZEgvMkxCZnJYdDNsc3dITkExbkduYVllUGZyN0E4Zy9QbFh1TkJqWjhRNzhVZUhwNFE0MVFud2d3ZnI3MjJOalV0ZTZnSnlMSWhxbW9uSENlVzNkTUovYXRkWGZ3VzEzUTJ3S1F3TEM4MmlTbjExd0drMkRLYm1JaUFwZEowRDVIc0EydkpYcjRiclFxbU5JTGtZQzdHWU5FMktBL01JVjZRZUpyRkZveUxBb3ZDU1l3djdVcVh6VlF4YlRtT2lhTWFlL2cxcTlaTjE3Wk5VVHBvYk82Qno3dkNxNitYNkFSNmR2VFU2bzBuaEVNWEVBYmVSV3Vlam55ajYrRVhlVmVOZm5BUVpGVlo1SlYrc1hhVy9FMkdyS2R3OWtROHBNNFN2UzI2STZha214cDhiR0NzdUlnbUhZdVhrRUhjRTE2TVQ2RHY4Q0krU2R4aW9pN0pmT3AwM3h0ZkpQekdod1hYY0ZpVmJNUVhMeTVmVjM5U0szK0QxdUZjeVQza1NxNjFxejRLNGFtSEdHQllzQnVpNlY3M2lZZ2oxUUZwRDE1MmNSNEFKOHdNL2sxQkl4OWhUbTB0LzVyQ2VIQXc4Mk9JcXVIMWhBTXBSUm1Nd0tZVzJIaU5WZGRVV2E2U3ZzVHRGMGFJanp4WkMrTjF2SnZRSFJwWmpZK2ZIZ24zaEpQSUkvSHR4aG1HOGU5NlpYcCtaVFNrVkRWTUpRZkU3UXdpaEp4T294amdwZnJmY0hTK2Y2NlM5eCtHaGktLStBemhrNHpzYlJQNzFva2hXRVFHOGc9PQ%3D%3D--08b8c9dbdc83ee7bb2ce80286aedcd8ad9c942ec';
- 
-   curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-   $server_output = json_decode(curl_exec($ch),true);
-   curl_close ($ch);
-   $url = "https://app-etslive-2.vidio.com/live/$id/master.m3u8?".$server_output['token'];
- 
-$c = str_replace("trace_id","4rr0w_bl4ck==",$url);
- 
-$w = substr($c, 0, -53);
-//print_r($url);
-return ($url);
-//print_r($server_output['token']);
-//return $w; 
-//print_r($server_output);
- 
+header('Content-type: text/plain'); 
+
+$id = $_GET["id"];
+$ch = curl_init();
+
+curl_setopt($ch, CURLOPT_URL, "https://zeus.rcti.plus/video/api/v1/live-event/$id/url?appierid=6c32ce16-cf3e-4e8f-ad57-f0aa48cb91e0");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+
+curl_setopt($ch, CURLOPT_ENCODING, 'gzip, deflate');
+
+$headers = array();
+$headers[] = 'Accept: application/json, text/plain, */*';
+$headers[] = 'Accept-Language: id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7';
+$headers[] = 'Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2aWQiOjAsInRva2VuIjoiOTY5ZDNkZDhhOTk5N2ZiMiIsInBsIjoibXdlYiIsImRldmljZV9pZCI6IjJmNWJiN2MzLWUyOTYtNDlhMy1iZmI5LWZiODVlZmMyNmJlOCJ9.ZGJdBtdlqljnRHzw_4Cv0Pf_QmuK4OlzGSfywMoGByo';
+$headers[] = 'Connection: keep-alive';
+$headers[] = 'Origin: https://m.rctiplus.com';
+$headers[] = 'Referer: https://m.rctiplus.com/';
+$headers[] = 'Sec-Fetch-Dest: empty';
+$headers[] = 'Sec-Fetch-Mode: cors';
+$headers[] = 'Sec-Fetch-Site: cross-site';
+$headers[] = 'User-Agent: Mozilla/5.0 (Linux; Android 12; CPH2235) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Mobile Safari/537.36';
+$headers[] = 'Apikey: jFFhGYfZzrEgaPIGmFOVttQzCNbvqJHb';
+$headers[] = 'Sec-Ch-Ua: \"Not:A-Brand\";v=\"99\", \"Chromium\";v=\"112\"';
+$headers[] = 'Sec-Ch-Ua-Mobile: ?1';
+$headers[] = 'Sec-Ch-Ua-Platform: \"Android\"';
+curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+$result = curl_exec($ch);
+if (curl_errno($ch)) {
+    echo 'Error:' . curl_error($ch);
 }
- 
+curl_close($ch);
+
+$result = json_decode($result, true);
+
+$c = $result['data']['url'];
+
+//print_r($c);
+header("Location: $c");
+//header("Location: https://ref.4rr0rr4.workers.dev/$c");
+
