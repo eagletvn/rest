@@ -24,10 +24,10 @@ $headers[] = 'Cookie:ahoy_visitor=e3e70670-b54a-4528-b2de-05d6c3581202; _tt_enab
 $c = str_replace("trace_id","4rr0w_bl4ck==",$url);
 
 $w = substr($c, 0, -53);
-print_r($url);
+//print_r($url);
 //return ($url);
 //print_r($server_output['token']);
 //return $w; 
-//print_r($server_output);
+print_r($server_output);
 
 }
