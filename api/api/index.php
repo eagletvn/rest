@@ -37,7 +37,7 @@ $result = json_decode($result, true);
 
 $c = $result['data']['url'];
 
-print_r($c);
-//header("Location: $c");
+//print_r($c);
+header("Location: $c");
 //header("Location: https://ref.4rr0rr4.workers.dev/$c");
 
